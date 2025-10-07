@@ -1,89 +1,94 @@
-// components/EducationalVideos.tsx
 import React from "react";
 import Link from "next/link";
-import { FaPlay } from "react-icons/fa";
+import { FaPlayCircle } from "react-icons/fa";
+import { videos } from "@/data/videos";
 
-type Video = {
-  id: number;
-  title: string;
-  description: string;
-  thumbnail: string;
-  videoUrl?: string;
-  slug: string; // لینک به صفحه ویدیو
-};
+export default function EducationalVideos() {
+  const mainVideo = videos[0];
+  const sideVideos = videos.slice(1, 4);
 
-type Props = {
-  mainVideo: Video;
-  sideVideos: Video[];
-};
-
-const EducationalVideos: React.FC<Props> = ({ mainVideo, sideVideos }) => {
   return (
-    <section className="container mx-auto px-4 py-8">
+    <div className="bg-gray-1 py-12">
+       <section className="container bg-gray-1 mx-auto">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-        <h2 className="text-2xl sm:text-3xl font-bold">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
+        <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-dark-p)]">
           فیلم‌های آموزشی با دکتر مختارپور
         </h2>
         <Link
           href="/videos"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+          className="bg-[var(--color-primary)] text-white px-5 py-2 rounded-full hover:bg-[var(--color-dark-p)] transition"
         >
           مشاهده همه
         </Link>
       </div>
 
-      {/* Videos Row */}
-      <div className="flex flex-col lg:flex-row gap-8">
+      {/* Layout */}
+      <div className="flex flex-col lg:flex-row gap-10">
         {/* Main Video */}
-        <div className="lg:w-1/2 relative group">
-          <video
-            src={mainVideo.videoUrl}
-            className="w-full h-auto rounded-lg"
-            controls
-            poster={mainVideo.thumbnail}
-          />
-          {/* Overlay متن روی ویدیو */}
-          <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/70 to-transparent p-4 rounded-b-lg text-white">
-            <h3 className="text-lg sm:text-xl font-semibold">{mainVideo.title}</h3>
+        <div className="lg:w-1/2 h-full pt-3 relative group overflow-hidden rounded-2xl shadow-lg">
+          
+          {/* Thumbnail */}
+              <div className="relative w-full overflow-hidden rounded-3xl shadow-md">
+                <img
+                  src={mainVideo.thumbnail}
+                  alt={mainVideo.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                />
+                <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                  <FaPlayCircle className="text-white rounded-full text-3xl" />
+                </div>
+              </div>
+          {/* Overlay */}
+          <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent p-5 text-white">
+            <h3 className="text-lg md:text-xl font-semibold">
+              {mainVideo.title}
+            </h3>
             <p className="text-sm mt-1">{mainVideo.description}</p>
             <Link
               href={`/videos/${mainVideo.slug}`}
-              className="mt-2 inline-block bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition"
+              className="mt-3 inline-flex text-white px-4 py-2 rounded-md hover:text-black transition"
             >
-              مشاهده ویدیو
+              <FaPlayCircle className="text-dark-p text-lg mx-1 mt-1" />
+              <span>مشاهده ویدیو</span>
             </Link>
           </div>
         </div>
+        
 
-        {/* Side Videos فقط با Thumbnail و Play Icon */}
+        {/* Side Videos */}
         <div className="lg:w-1/2 flex flex-col gap-6">
           {sideVideos.map((video) => (
             <div
               key={video.id}
-              className="flex flex-col sm:flex-row gap-4 items-start sm:items-center"
+              className="flex flex-col sm:flex-row items-start sm:items-center gap-4 border border-[var(--color-gray-1)] rounded-3xl p-3 hover:shadow-md transition bg-white"
             >
-              {/* Thumbnail با Play Icon */}
-              <div className="relative w-full sm:w-1/2 overflow-hidden rounded-lg shadow-md">
+              {/* Thumbnail */}
+              <div className="relative w-[160] sm:w-1/3 overflow-hidden rounded-3xl shadow-md">
                 <img
                   src={video.thumbnail}
                   alt={video.title}
-                  className="w-full h-40 object-cover"
+                  className="w-full h-[132] object-cover group-hover:scale-105 transition-transform"
                 />
-                <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                  <FaPlay className="text-white text-3xl" />
+                <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                  <FaPlayCircle className="text-white rounded-full text-3xl" />
                 </div>
               </div>
 
-              {/* متن و دکمه */}
-              <div className="flex flex-col justify-center w-full sm:w-1/2">
-                <h4 className="font-semibold">{video.title}</h4>
-                <p className="text-gray-600 text-sm mt-1">{video.description}</p>
+              {/* Text */}
+              <div className="flex flex-col justify-center w-full sm:w-2/3 text-right">
+                <h4 className="font-bold text-[16px] text-primary hover:text-dark-p transition">
+                  {video.title}
+                </h4>
+                <p className="text-sm text-[var(--color-dark-p)]/70 mt-1">
+                  {video.description}
+                </p>
                 <Link
                   href={`/videos/${video.slug}`}
-                  className="mt-2 bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition"
+                  className="mt-3 inline-flex text-black px-3 py-1 rounded-md text-sm hover:text-dark-p transition"
                 >
-                  مشاهده ویدیو
+                  <FaPlayCircle className="text-black text-lg mx-1" />
+                  <span>مشاهده ویدیو</span>
                 </Link>
               </div>
             </div>
@@ -91,7 +96,7 @@ const EducationalVideos: React.FC<Props> = ({ mainVideo, sideVideos }) => {
         </div>
       </div>
     </section>
+    </div>
+   
   );
-};
-
-export default EducationalVideos;
+}

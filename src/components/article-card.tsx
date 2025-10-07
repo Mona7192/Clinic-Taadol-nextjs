@@ -1,90 +1,96 @@
-// components/LatestArticles.tsx
+// src/components/LatestArticles.tsx
+"use client";
+
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { FaRegCalendarAlt } from "react-icons/fa";
+import { articles } from "@/data/articles";
 
-type Article = {
-  id: number;
-  title: string;
-  description: string;
-  image: string;
-  date: string;
-  slug: string; // برای لینک به صفحه تکی
-};
+const LatestArticles: React.FC = () => {
+  // فقط ۴ مقاله اول برای نمایش
+  const displayedArticles = articles.slice(0, 5);
+  const mainArticle = displayedArticles[0];
+  const sideArticles = displayedArticles.slice(1);
 
-type Props = {
-  mainArticle: Article;
-  sideArticles: Article[];
-};
-
-const LatestArticles: React.FC<Props> = ({ mainArticle, sideArticles }) => {
   return (
-    <section className="container mx-auto px-4 py-8">
+    <section className="container mx-auto px-4 py-12 bg-white text-[var(--color-dark-p)]">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-        <h2 className="text-2xl sm:text-3xl font-bold">جدیدترین مقالات</h2>
+      <div className="flex justify-between items-center mb-8">
+        <h2 className="text-xl md:text-2xl font-bold">
+          جدیدترین مقاله‌ها
+        </h2>
         <Link
-          href="/blog"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+          href="/articles"
+          className="flex items-center gap-2 text-sm bg-[var(--color-primary)] text-white px-5 py-2 rounded-full hover:bg-[var(--color-dark-p)] transition-all"
         >
           مشاهده همه
+          <span className="text-lg font-bold">←</span>
         </Link>
       </div>
 
-      {/* Articles Row */}
-      <div className="flex flex-col lg:flex-row gap-8">
-        {/* مقاله بزرگ */}
-        <Link
-          href={`/blog/${mainArticle.slug}`}
-          className="lg:w-1/2 group relative overflow-hidden rounded-lg shadow-md"
-        >
-          <img
-            src={mainArticle.image}
-            alt={mainArticle.title}
-            className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
-          />
-          <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/70 to-transparent p-4 text-white">
-            <h3 className="text-lg sm:text-xl font-semibold">{mainArticle.title}</h3>
-            <p className="text-sm mt-1">{mainArticle.description}</p>
-            <div className="flex items-center mt-2 text-sm text-gray-200">
-              <FaRegCalendarAlt className="mr-1" /> {mainArticle.date}
+      {/* Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        
+        {/* سمت راست: مقاله اصلی */}
+        {mainArticle && (
+          <Link
+            href={`/articles/${mainArticle.slug}`}
+            className="group p-4 border border-gray-2 rounded-3xl overflow-hidden bg-white hover:shadow-lg transition-all flex flex-col justify-between"
+          >
+            <div className="relative">
+              <Image
+                src={mainArticle.image}
+                alt={mainArticle.title}
+                width={596}
+                height={391}
+                className="w-full h-full rounded-3xl object-cover group-hover:scale-105 transition-transform duration-300"
+              />
             </div>
-          </div>
-        </Link>
 
-        {/* مقالات کناری با افکت Hover */}
-        <div className="lg:w-1/2 grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="p-5 text-right">
+              <h3 className="font-semibold text-base md:text-lg mb-2 text-[var(--color-primary)]">
+                {mainArticle.title}
+              </h3>
+              <p className="text-sm text-[var(--color-dark-p)]/80 mb-3">
+                {mainArticle.description}
+              </p>
+              <div className="absolute flex items-center justify-start text-xs text-dark-p bg-light-p px-2 py-1 rounded-full">
+                <FaRegCalendarAlt className="ml-1" /> {mainArticle.date}
+              </div>
+            </div>
+          </Link>
+        )}
+        {/* سمت چپ: سه مقاله کوچک */}
+        <div className="lg:col-span-1 grid grid-cols-1 sm:grid-cols-2 gap-6">
           {sideArticles.map((article) => (
             <Link
               key={article.id}
-              href={`/blog/${article.slug}`}
-              className="group relative overflow-hidden rounded-lg shadow-md flex flex-col"
+              href={`/articles/${article.slug}`}
+              className="group border border-gray-2 p-4 rounded-3xl overflow-hidden bg-white hover:shadow-lg transition-all"
             >
-              {/* تصویر با افکت تاریکی روی Hover */}
-              <img
-                src={article.image}
-                alt={article.title}
-                className="w-full h-40 object-cover transition-transform duration-300 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all rounded-lg"></div>
+              <div className="relative">
+                <Image
+                  src={article.image}
+                  alt={article.title}
+                  width={270}
+                  height={140}
+                  className="w-full h-36 rounded-3xl object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute bottom-2 right-2 flex items-center bg-light-p text-dark-p text-xs px-2 py-1 rounded-full backdrop-blur-sm">
+                  <FaRegCalendarAlt className="ml-1" size={12} /> {article.date}
+                </div>
+              </div>
 
-              {/* متن */}
-              <div className="p-4 flex flex-col flex-1 justify-between relative z-10">
-                <div>
-                  <h4 className="font-semibold text-md text-gray-900 group-hover:text-white transition">
-                    {article.title}
-                  </h4>
-                  <p className="text-gray-600 text-sm mt-1 group-hover:text-gray-200 transition">
-                    {article.description}
-                  </p>
-                </div>
-                <div className="flex items-center mt-2 text-gray-500 text-sm group-hover:text-gray-200 transition">
-                  <FaRegCalendarAlt className="mr-1" /> {article.date}
-                </div>
+              <div className="p-4 text-right">
+                <h3 className="font-normal text-sm md:text-base mb-2 group-hover:text-[var(--color-primary)] transition">
+                  {article.title}
+                </h3>
               </div>
             </Link>
           ))}
         </div>
+
       </div>
     </section>
   );
