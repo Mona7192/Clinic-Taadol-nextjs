@@ -1,5 +1,6 @@
 import Image from "next/image";
-import Link from "next/link";import { HiMiniCheckBadge } from "react-icons/hi2";
+import Link from "next/link";
+import { HiMiniCheckBadge } from "react-icons/hi2";
 
 export default function Features() {
   return (
