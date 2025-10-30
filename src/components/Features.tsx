@@ -52,8 +52,6 @@ export default function Features() {
             </p>
           </div>
         </div>
-
-        
       </div>
     </section>
   );
