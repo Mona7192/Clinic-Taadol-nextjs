@@ -2,18 +2,35 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { articles } from "@/data/articles";
 
-export default function SingleArticlePage({ params }: { params: { slug: string } }) {
-  // پیدا کردن مقاله از روی slug
-  console.log("all slugs:", articles.map(a => a.slug));
+// تابع fetch مقاله تک
+async function fetchArticle(slug: string) {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/articles/${slug}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    cache: 'no-store',
+  });
 
-  const article = articles.find((a) => a.slug === params.slug);
-
-  if (!article) {
-    notFound(); // اگر slug اشتباه بود
+  if (!response.ok) {
+    if (response.status === 404) {
+      notFound();
+    }
+    throw new Error('Failed to fetch article');
   }
-  console.log("slug params:", params.slug);
+
+  return response.json(); // فرض کنیم {title, image, date, content, ...} برمی‌گردونه
+}
+
+export default async function SingleArticlePage({ params }: { params: { slug: string } }) {
+  let article;
+  try {
+    article = await fetchArticle(params.slug);
+  } catch (error) {
+    console.error('Error fetching article:', error);
+    return <p>خطا در بارگذاری مقاله</p>; // یا redirect/notFound
+  }
 
   return (
     <main className="bg-white text-[var(--color-dark-p)]">
