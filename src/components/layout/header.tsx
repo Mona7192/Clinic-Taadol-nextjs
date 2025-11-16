@@ -12,7 +12,7 @@ export default function Header() {
     <header className="w-full shadow-sm relative z-50">
       {/* ردیف اول */}
       <div className="bg-gray-100 text-sm">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between px-4 py-2 gap-2 sm:gap-0">
+        <div className="max-w-2/3 mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between px-4 py-2 gap-2 sm:gap-0">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 text-gray-700">
             <div className="flex items-center gap-1">
               <Phone size={16} className="text-primary" />
