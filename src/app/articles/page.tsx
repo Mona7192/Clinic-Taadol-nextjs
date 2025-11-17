@@ -5,10 +5,10 @@ import { FaRegCalendarAlt } from "react-icons/fa";
 
 // تابع fetch — حتماً داخل همین فایل
 async function fetchArticles() {
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-  console.log("درخواست به:", `${API_URL}/api/articles`);
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  console.log("درخواست به:", `${API_URL}/articles`);
 
-  const res = await fetch(`${API_URL}/api/articles`, {
+  const res = await fetch(`${API_URL}/articles`, {
     cache: "no-store", // همیشه تازه
   });
 

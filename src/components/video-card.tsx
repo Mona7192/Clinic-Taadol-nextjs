@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { FaPlayCircle } from "react-icons/fa";
-import { videos } from "@/data/videos";
+import { localVideos as videos } from "@/data/videos";
 
 export default function EducationalVideos() {
   const mainVideo = videos[0];

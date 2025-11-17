@@ -1,5 +1,5 @@
 // src/data/videos.ts
-export const videos = [
+export const localVideos = [
   {
     id: 1,
     title: "مقدمه‌ای بر روان‌شناسی نوین با دکتر مختارپور",
