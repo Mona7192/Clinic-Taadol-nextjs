@@ -61,7 +61,9 @@ export default async function SingleVideoPage({
       </section>
 
       {/* Thumbnail */}
+      
       <section className="max-w-4xl mx-auto px-4 py-10">
+        {/*
         {video.thumbnail && (
           <div className="overflow-hidden rounded-2xl shadow-md mb-8">
             <Image
@@ -73,7 +75,7 @@ export default async function SingleVideoPage({
             />
           </div>
         )}
-
+        */}
         {/* Video Player */}
         <video
           controls
