@@ -3,13 +3,22 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaRegCalendarAlt } from "react-icons/fa";
 
+interface Article {
+  id: number;
+  title: string;
+  description: string;
+  image: string | null;
+  slug: string;
+  date: string;
+}
+
 // تابع fetch — حتماً داخل همین فایل
-async function fetchArticles() {
+async function fetchArticles(): Promise<{ data: Article[] }> {
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
   console.log("درخواست به:", `${API_URL}/articles`);
 
   const res = await fetch(`${API_URL}/articles`, {
-    cache: "no-store", // همیشه تازه
+    cache: "no-store",
   });
 
   if (!res.ok) {
@@ -17,8 +26,8 @@ async function fetchArticles() {
     return { data: [] };
   }
 
-  const data = await res.json();
-  console.log("داده‌های دریافتی:", data);
+  const data = (await res.json()) as { data: Article[] };
+
   return data;
 }
 
@@ -44,7 +53,7 @@ export default async function BlogPage() {
       {/* لیست مقالات */}
       <section className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {articles.length > 0 ? (
-          articles.map((article: any) => (
+          articles.map((article: Article) => (
             <div
               key={article.id}
               className="bg-white border border-gray-2 rounded-xl overflow-hidden shadow hover:shadow-lg transition-all"
