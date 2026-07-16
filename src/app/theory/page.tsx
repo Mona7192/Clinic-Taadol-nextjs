@@ -1,4 +1,4 @@
-import { TheoryExplainer } from "@/components/TheorySection";
+import TheorySection from "@/components/TheorySection";
 
 export default function TheoryPage() {
   return (
@@ -30,7 +30,7 @@ export default function TheoryPage() {
             </p>
           </div>
 
-          <TheoryExplainer />
+          <TheorySection />
 
         </div>
       </div>
