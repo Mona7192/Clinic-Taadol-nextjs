@@ -1,4 +1,7 @@
-export async function fetchWithFallback(apiUrl: string, localData: any[]) {
+export async function fetchWithFallback<T>(
+  apiUrl: string,
+  localData: T[]
+): Promise<T[]> {
   try {
     const res = await fetch(apiUrl, { cache: "no-store" });
 
@@ -7,9 +10,8 @@ export async function fetchWithFallback(apiUrl: string, localData: any[]) {
       return localData;
     }
 
-    const data = await res.json();
+    const data = (await res.json()) as T[];
 
-    // اگر دیتا خالی بود → fallback استفاده کن
     if (!data || data.length === 0) {
       console.warn("API Returned Empty → Using local fallback");
       return localData;

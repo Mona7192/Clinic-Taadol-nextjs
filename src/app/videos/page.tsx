@@ -1,8 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FaPlay } from "react-icons/fa";
+ 
+interface Video {
+  id: number;
+  title: string;
+  description: string;
+  thumbnail: string | null;
+  slug: string;
+}
 
-async function fetchVideos() {
+async function fetchVideos(): Promise<Video[] | null> {
   const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
   console.log("درخواست به:", `${API_URL}/api/videos`);
 
@@ -16,7 +24,7 @@ async function fetchVideos() {
 
     const json = await res.json();
 
-    return json.data; // ⬅ فقط آرایه واقعی ویدیوها
+    return json.data as Video[]; // ⬅ فقط آرایه واقعی ویدیوها
   } catch (error) {
     console.error("❌ خطا در دریافت ویدیوها:", error);
     return null;
@@ -39,7 +47,7 @@ export default async function VideosPage() {
 
       <section className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {videos && videos.length > 0 ? (
-          videos.map((video: any) => (
+          videos.map((video: Video ) => (
             <div
               key={video.id}
               className="bg-white border border-gray-2 rounded-2xl overflow-hidden shadow hover:shadow-lg transition-all group"
